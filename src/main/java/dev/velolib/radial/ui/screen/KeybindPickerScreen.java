@@ -149,15 +149,10 @@ public class KeybindPickerScreen extends Screen {
         }
 
         @Override
-        public void render(
+        public void renderContent(
                 GuiGraphics graphics,
                 int index,
                 int top,
-                int left,
-                int width,
-                int height,
-                int mouseX,
-                int mouseY,
                 boolean hovered,
                 float partialTick) {
 

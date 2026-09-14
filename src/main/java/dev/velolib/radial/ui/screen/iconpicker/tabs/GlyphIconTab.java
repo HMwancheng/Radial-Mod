@@ -39,7 +39,7 @@ public class GlyphIconTab extends GridIconTab<String> {
         int textX = x + (getSlotSize() - textWidth) / 2;
         int textY = y + (getSlotSize() - client.font.lineHeight) / 2;
 
-        graphics.text(client.font, glyph, textX, textY, 0xFFFFFFFF);
+        graphics.drawString(client.font, glyph, textX, textY, 0xFFFFFFFF);
     }
 
     @Override

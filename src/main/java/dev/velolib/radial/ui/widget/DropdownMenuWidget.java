@@ -118,7 +118,7 @@ public class DropdownMenuWidget<T> extends AbstractWidget {
 
             Component text = labelMapper.apply(option);
             int optionColor = option.equals(currentSelection) ? 0xFF55FF55 : 0xFFFFFFFF;
-            graphics.text(font, text, getX() + 4, itemY + (itemHeight - 8) / 2, optionColor);
+            graphics.drawString(font, text, getX() + 4, itemY + (itemHeight - 8) / 2, optionColor);
         }
         graphics.disableScissor();
 

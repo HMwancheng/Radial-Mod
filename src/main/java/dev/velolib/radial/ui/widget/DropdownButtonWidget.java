@@ -105,8 +105,8 @@ public class DropdownButtonWidget<T> extends AbstractWidget {
         int textColor = this.active ? 0xFFFFFFFF : 0xFFA0A0A0;
         Component currentText = this.labelMapper.apply(this.selectedOption);
 
-        graphics.text(font, currentText, getX() + 4, getY() + (getHeight() - 8) / 2, textColor);
-        graphics.text(
+        graphics.drawString(font, currentText, getX() + 4, getY() + (getHeight() - 8) / 2, textColor);
+        graphics.drawString(
                 font,
                 Component.literal(open ? "▲" : "▼"),
                 getX() + width - 12,

@@ -59,7 +59,7 @@ public class InventoryIconTab implements IconTab {
         int bgY = screenHeight / 2 - INV_HEIGHT / 2 + 10;
 
         Component infoText = Component.translatable("screen.radial.editor.icon_picker.inventory.info");
-        graphics.text(mc.font, infoText, screenWidth / 2 - mc.font.width(infoText) / 2, bgY - 15, 0xFFAAAAAA);
+        graphics.drawString(mc.font, infoText, screenWidth / 2 - mc.font.width(infoText) / 2, bgY - 15, 0xFFAAAAAA);
         graphics.blit(
                 RenderPipelines.GUI_TEXTURED,
                 INVENTORY_TEXTURE,
@@ -111,7 +111,7 @@ public class InventoryIconTab implements IconTab {
     private void drawInvSlot(
             GuiGraphics graphics, Minecraft mc, int mouseX, int mouseY, int x, int y, ItemStack stack) {
         if (!stack.isEmpty()) {
-            graphics.fakeItem(stack, x + 1, y + 1);
+            graphics.renderFakeItem(stack, x + 1, y + 1);
         }
         if (isHovered(mouseX, mouseY, x, y)) {
             graphics.fill(x, y, x + INV_SLOT_SIZE, y + INV_SLOT_SIZE, 0x40FFFFFF);

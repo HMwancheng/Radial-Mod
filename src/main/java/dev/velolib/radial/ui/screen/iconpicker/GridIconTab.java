@@ -116,7 +116,7 @@ public abstract class GridIconTab<T> implements IconTab {
         }
 
         @Override
-        public void extractContent(
+        public void renderContent(
                 @NonNull GuiGraphics graphics, int mouseX, int mouseY, boolean hovered, float delta) {
             int left = getContentX();
             int top = getContentY();

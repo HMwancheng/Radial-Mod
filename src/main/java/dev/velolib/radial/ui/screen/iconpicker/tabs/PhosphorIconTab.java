@@ -53,7 +53,7 @@ public class PhosphorIconTab extends GridIconTab<PhosphorIconCache.PhosphorIcon>
         int textX = x + (getSlotSize() - textWidth) / 2;
         int textY = y + (getSlotSize() - client.font.lineHeight) / 2 + 5;
 
-        graphics.text(client.font, component, textX, textY, 0xFFFFFFFF, false);
+        graphics.drawString(client.font, component, textX, textY, 0xFFFFFFFF, false);
 
         if (hovered) {
             graphics.setTooltipForNextFrame(client.font, Component.literal(icon.name()), mouseX, mouseY);

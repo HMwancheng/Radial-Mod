@@ -67,7 +67,7 @@ public class ItemIconTab extends GridIconTab<ItemIconTab.ItemSearchEntry> {
             ItemSearchEntry item,
             boolean hovered) {
 
-        graphics.fakeItem(item.stack(), x + 2, y + 2);
+        graphics.renderFakeItem(item.stack(), x + 2, y + 2);
 
         if (hovered) {
             graphics.setTooltipForNextFrame(Minecraft.getInstance().font, item.stack(), mouseX, mouseY);

@@ -54,11 +54,11 @@ dependencies {
 
 	modImplementation "maven.modrinth:modmenu:${project.modmenu_version}"
 
-	compileOnly "maven.modrinth:yacl:${project.yacl_version}"
-	localRuntime "maven.modrinth:yacl:${project.yacl_version}"
+	modCompileOnly "maven.modrinth:yacl:${project.yacl_version}"
+	modLocalRuntime "maven.modrinth:yacl:${project.yacl_version}"
 
-	compileOnly "maven.modrinth:malilib:${project.malilib_version}"
-	localRuntime "maven.modrinth:malilib:${project.malilib_version}"
+	modCompileOnly "maven.modrinth:malilib:${project.malilib_version}"
+	modLocalRuntime "maven.modrinth:malilib:${project.malilib_version}"
 }
 
 processResources {

@@ -63,7 +63,7 @@ public class MalilibSlotMode extends IconEnabledSlotMode {
 
         Button valueBrowseButton = Button.builder(
                         Component.translatable("screen.radial.editor.select"),
-                        btn -> Minecraft.getInstance().gui.setScreen(new MalilibSelectionScreen(screen, action -> {
+                        btn -> Minecraft.getInstance().setScreen(new MalilibSelectionScreen(screen, action -> {
                             valueField.setValue(action.id());
                             slot.value = action.id();
                         })))

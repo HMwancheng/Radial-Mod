@@ -24,7 +24,7 @@ public class KeyMappingMixin {
             if (self.getCategory().equals(KeyMapping.Category.MOVEMENT)) {
 
                 int keyCode = KeyBindingHelper.getBoundKeyOf(self).getValue();
-                long handle = client.getWindow().getWindow();
+                long handle = client.getWindow().handle();
                 boolean isPhysicallyPressed = GLFW.glfwGetKey(handle, keyCode) == GLFW.GLFW_PRESS;
 
                 cir.setReturnValue(isPhysicallyPressed);
