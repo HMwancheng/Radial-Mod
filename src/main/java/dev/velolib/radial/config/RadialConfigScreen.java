@@ -304,7 +304,7 @@ public class RadialConfigScreen {
                         public void setFocused(boolean focused) {}
 
                         @Override
-                        public void renderWidget(@NonNull GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+                        public void render(@NonNull GuiGraphics graphics, int mouseX, int mouseY, float delta) {
                             if (showPreview) {
                                 renderPreview(graphics, config);
                             }

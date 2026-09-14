@@ -5,6 +5,7 @@ import dev.velolib.radial.RadialClient;
 import dev.velolib.radial.api.RadialSlot;
 import dev.velolib.radial.api.SlotActionContext;
 import dev.velolib.radial.mixin.KeyMappingAccessor;
+import dev.velolib.radial.mixin.KeyboardHandlerAccessor;
 import dev.velolib.radial.mode.base.IconEnabledSlotMode;
 import dev.velolib.radial.ui.screen.KeybindPickerScreen;
 import dev.velolib.radial.ui.screen.SlotEditorScreen;
@@ -28,7 +29,8 @@ public class KeybindSlotMode extends IconEnabledSlotMode {
         // TODO: add crash debug key
 
         SPECIAL_ACTIONS.put(new KeyMapping("key.screenshot", GLFW.GLFW_KEY_F2, KeyMapping.Category.MISC), client -> {
-            Screenshot.grab(client, false);
+            Screenshot.takeScreenshot(
+                    client.getMainRenderTarget(), text -> client.gui.getChat().addMessage(text));
         });
 
         SPECIAL_ACTIONS.put(
@@ -109,7 +111,7 @@ public class KeybindSlotMode extends IconEnabledSlotMode {
                     InputConstants.Key inputKey = ((KeyMappingAccessor) key).getKey();
                     int keyCode = inputKey.getValue();
                     var dummyEvent = new KeyEvent(keyCode, 0, 0);
-                    client.keyboardHandler.handleDebugKeys(dummyEvent);
+                    ((KeyboardHandlerAccessor) client.keyboardHandler).invokeHandleDebugKeys(dummyEvent);
                 }
 
                 RadialClient.scheduleKeyPress(key);
