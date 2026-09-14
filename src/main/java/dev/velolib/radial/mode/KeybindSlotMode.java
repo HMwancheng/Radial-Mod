@@ -29,8 +29,7 @@ public class KeybindSlotMode extends IconEnabledSlotMode {
         // TODO: add crash debug key
 
         SPECIAL_ACTIONS.put(new KeyMapping("key.screenshot", GLFW.GLFW_KEY_F2, KeyMapping.Category.MISC), client -> {
-            Screenshot.takeScreenshot(
-                    client.getMainRenderTarget(), text -> client.gui.getChat().addMessage(text));
+            Screenshot.takeScreenshot(client.getMainRenderTarget(), image -> {});
         });
 
         SPECIAL_ACTIONS.put(
