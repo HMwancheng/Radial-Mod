@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.NativeImage;
 import dev.velolib.radial.config.RadialConfig;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.resources.Identifier;
@@ -145,7 +145,7 @@ public class DonutRenderer implements AutoCloseable {
      * @param resScale    The resolution scale to properly size the texture on screen.
      */
     public void renderSector(
-            GuiGraphicsExtractor graphics,
+            GuiGraphics graphics,
             float cx,
             float cy,
             float slotAngle,
@@ -156,22 +156,18 @@ public class DonutRenderer implements AutoCloseable {
         if (baseTexture == null || hotTexture == null || baseTexId == null || hotTexId == null) {
             return;
         }
-
         float clampedEase = Mth.clamp(ease, 0.0f, 1.0f);
         if (clampedEase <= 0.0f) {
             return;
         }
-
         graphics.pose().pushMatrix();
         graphics.pose().translate(cx, cy);
         graphics.pose().rotate(slotAngle);
         graphics.pose().translate(push * clampedEase, 0);
         graphics.pose().scale(clampedEase / resScale, clampedEase / resScale);
-
         int offset = -texSize / 2;
         Identifier texture = highlighted ? hotTexId : baseTexId;
         int alpha = Mth.clamp((int) (clampedEase * 255.0f + 0.5f), 0, 255);
-
         graphics.blit(
                 RenderPipelines.GUI_TEXTURED,
                 texture,
@@ -184,7 +180,6 @@ public class DonutRenderer implements AutoCloseable {
                 texSize,
                 texSize,
                 (alpha << 24) | 0xFFFFFF);
-
         graphics.pose().popMatrix();
     }
 

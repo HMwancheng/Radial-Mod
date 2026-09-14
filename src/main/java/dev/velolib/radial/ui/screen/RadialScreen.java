@@ -1,6 +1,7 @@
 package dev.velolib.radial.ui.screen;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.math.Axis;
 import dev.velolib.radial.RadialClient;
 import dev.velolib.radial.api.RadialSlot;
 import dev.velolib.radial.api.SlotActionContext;
@@ -10,10 +11,11 @@ import dev.velolib.radial.render.SlotRenderHelper;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -148,14 +150,14 @@ public class RadialScreen extends Screen {
     // --- Render Loop ---
 
     @Override
-    public void extractRenderState(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+    public void render(@NonNull GuiGraphics graphics, int mouseX, int mouseY, float delta) {
         RadialConfig config = RadialConfig.INSTANCE;
         RadialConfig.ActivationMode mode = config.activationMode;
         boolean isScrollMode =
                 mode == RadialConfig.ActivationMode.SCROLL_CLICK || mode == RadialConfig.ActivationMode.SCROLL_RELEASE;
 
         // 1. Check Key Release
-        InputConstants.Key boundKey = KeyMappingHelper.getBoundKeyOf(RadialClient.OPEN_RADIAL);
+        InputConstants.Key boundKey = KeyBindingHelper.getBoundKeyOf(RadialClient.OPEN_RADIAL);
         int keyCode = boundKey.getValue();
         long handle = Minecraft.getInstance().getWindow().handle();
 
@@ -266,8 +268,7 @@ public class RadialScreen extends Screen {
             int color = (revealAlpha << 24) | 0xFFFFFF;
             int drawOffset = -SLOT_SIZE / 2;
 
-            graphics.blitSprite(
-                    RenderPipelines.GUI_TEXTURED, SLOT_TEXTURE, drawOffset, drawOffset, SLOT_SIZE, SLOT_SIZE, color);
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SLOT_TEXTURE, drawOffset, drawOffset, SLOT_SIZE, SLOT_SIZE, color);
             if (i == hoveredSlot) {
                 graphics.blitSprite(
                         RenderPipelines.GUI_TEXTURED,
@@ -280,13 +281,13 @@ public class RadialScreen extends Screen {
             }
 
             if (isSubmenu() && i == 0) {
-                graphics.item(new ItemStack(Items.ARROW), -ITEM_SIZE / 2, -ITEM_SIZE / 2);
+                graphics.renderItem(new ItemStack(Items.ARROW), -ITEM_SIZE / 2, -ITEM_SIZE / 2);
             } else {
                 RadialSlot slot = getTargetSlot(i);
                 if (slot != null) {
                     SlotRenderHelper.renderSlotIcon(graphics, slot, drawOffset, drawOffset);
                 } else {
-                    graphics.item(new ItemStack(Items.BARRIER), -ITEM_SIZE / 2, -ITEM_SIZE / 2);
+                    graphics.renderItem(new ItemStack(Items.BARRIER), -ITEM_SIZE / 2, -ITEM_SIZE / 2);
                 }
             }
 
@@ -303,12 +304,12 @@ public class RadialScreen extends Screen {
 
             if (!name.isEmpty()) {
                 int alpha = Mth.clamp((int) (easeOutQuint(getGlobalRevealProgress(config)) * 255.0F + 0.5F), 0, 255);
-                graphics.text(
+                graphics.drawString(
                         font, Component.nullToEmpty(name), cx - font.width(name) / 2, cy - 4, (alpha << 24) | 0xFFFFFF);
             }
         }
 
-        super.extractRenderState(graphics, mouseX, mouseY, delta);
+        super.render(graphics, mouseX, mouseY, delta);
     }
 
     // --- Math & Animations ---
@@ -436,7 +437,7 @@ public class RadialScreen extends Screen {
 
                 RadialSlot slot = getTargetSlot(hoveredSlot);
                 if (slot != null) {
-                    minecraft.gui.setScreen(new SlotEditorScreen(slot, activeSlots == rootSlots));
+                    minecraft.setScreen(new SlotEditorScreen(slot, activeSlots == rootSlots));
                     return true;
                 }
             }
@@ -451,9 +452,9 @@ public class RadialScreen extends Screen {
     }
 
     @Override
-    public boolean keyPressed(net.minecraft.client.input.@NonNull KeyEvent event) {
+    public boolean keyPressed(@NonNull KeyEvent key) {
         // 1. Check if the "Back" key was pressed
-        if (RadialClient.BACK_KEY.matches(event)) {
+        if (RadialClient.BACK_KEY.matches(key)) {
             if (isSubmenu()) {
                 goBack();
                 return true;
@@ -462,7 +463,7 @@ public class RadialScreen extends Screen {
 
         // 2. Check if any of the Slot 1-12 keys were pressed
         for (int i = 0; i < RadialClient.SLOT_KEYS.length; i++) {
-            if (RadialClient.SLOT_KEYS[i].matches(event)) {
+            if (RadialClient.SLOT_KEYS[i].matches(key)) {
                 if (i < currentSlotCount && i < activeSlots.size()) {
                     performAction(activeSlots.get(i));
                     return true;
@@ -471,11 +472,11 @@ public class RadialScreen extends Screen {
         }
 
         // Pass any other keys (like ESC) to the default screen handler
-        return super.keyPressed(event);
+        return super.keyPressed(key);
     }
 
     @Override
-    public void extractBackground(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+    public void renderBackground(@NonNull GuiGraphics graphics, int mouseX, int mouseY, float delta) {
         // Intentionally left empty to prevent the default darkened screen background from rendering
     }
 }

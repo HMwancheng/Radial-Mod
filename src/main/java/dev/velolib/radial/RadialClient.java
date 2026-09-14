@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.fabricmc.loader.api.FabricLoader;
@@ -23,33 +23,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class RadialClient implements ClientModInitializer {
-
     public static final String MOD_ID = "radial";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-
     private static final KeyMapping.Category CATEGORY =
             KeyMapping.Category.register(Identifier.fromNamespaceAndPath(MOD_ID, "main"));
-
-    public static final KeyMapping OPEN_RADIAL = KeyMappingHelper.registerKeyMapping(
-            new KeyMapping("key." + MOD_ID + ".open", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_R, CATEGORY, 0));
-    public static final KeyMapping BACK_KEY = KeyMappingHelper.registerKeyMapping(new KeyMapping(
-            "key." + MOD_ID + ".back", InputConstants.Type.KEYSYM, InputConstants.UNKNOWN.getValue(), CATEGORY, 1));
+    public static final KeyMapping OPEN_RADIAL = KeyBindingHelper.registerKeyBinding(new KeyMapping(
+            "key." + MOD_ID + ".open", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_R, CATEGORY));
+    public static final KeyMapping BACK_KEY = KeyBindingHelper.registerKeyBinding(new KeyMapping(
+            "key." + MOD_ID + ".back", InputConstants.Type.KEYSYM, InputConstants.UNKNOWN.getValue(), CATEGORY));
     public static final KeyMapping[] SLOT_KEYS = new KeyMapping[12];
-
     static {
         for (int i = 0; i < 12; i++) {
-            SLOT_KEYS[i] = KeyMappingHelper.registerKeyMapping(new KeyMapping(
+            SLOT_KEYS[i] = KeyBindingHelper.registerKeyBinding(new KeyMapping(
                     "key." + MOD_ID + ".slot." + (i + 1),
                     InputConstants.Type.KEYSYM,
                     InputConstants.UNKNOWN.getValue(),
-                    CATEGORY,
-                    12 + i));
+                    CATEGORY));
         }
     }
-
     private static final Map<KeyMapping, Integer> keyPressQueue = new ConcurrentHashMap<>();
     private static boolean keyLocked = false;
-
     public static void lockKey() {
         keyLocked = true;
     }
@@ -81,44 +74,36 @@ public class RadialClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         LOGGER.info("Initializing Radial Client...");
-
         // REGISTER CONFIG
         SlotModeRegistry.init();
         ShortcutRegistry.init();
         RadialConfig.load();
-
         if (FabricLoader.getInstance().isModLoaded("malilib")) {
             MalilibIntegration.init();
         }
-
         // REGISTER HUD & EVENTS
         HudElementRegistry.replaceElement(VanillaHudElements.CROSSHAIR, original -> (graphics, tracker) -> {
-            if (!(Minecraft.getInstance().gui.screen() instanceof RadialScreen)) {
-                original.extractRenderState(graphics, tracker);
+            if (!(Minecraft.getInstance().screen instanceof RadialScreen)) {
+                original.render(graphics, tracker);
             }
         });
-
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (OPEN_RADIAL.isDown()) {
-                if (!keyLocked && client.gui.screen() == null) {
+                if (!keyLocked && client.screen == null) {
                     RadialScreen.prepareRenderer();
-                    client.gui.setScreen(new RadialScreen());
+                    client.setScreen(new RadialScreen());
                 }
             } else {
                 keyLocked = false;
             }
-
             //noinspection StatementWithEmptyBody
             while (OPEN_RADIAL.consumeClick()) {}
-
             if (!keyPressQueue.isEmpty()) {
                 var it = keyPressQueue.entrySet().iterator();
-
                 while (it.hasNext()) {
                     var entry = it.next();
                     KeyMapping key = entry.getKey();
                     int ticksLeft = entry.getValue();
-
                     if (ticksLeft > 0) {
                         key.setDown(true);
                         entry.setValue(ticksLeft - 1);

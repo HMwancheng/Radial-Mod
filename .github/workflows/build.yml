@@ -1,7 +1,8 @@
 name: Release Build
 on:
   push:
-    tags: ["v*"] # Triggers only when you push a tag like v1.0.0+26.1.2
+    branches: [ "main" ]
+    tags: ["v*"]
 
 jobs:
   build:
@@ -20,7 +21,7 @@ jobs:
         uses: actions/setup-java@v5
         with:
           distribution: 'zulu'
-          java-version: '25'
+          java-version: '21'
 
       - name: Cache Gradle Packages
         uses: actions/cache@v5

@@ -5,7 +5,7 @@ import dev.velolib.radial.util.PhosphorIconCache;
 import java.util.Objects;
 import java.util.Optional;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -117,7 +117,7 @@ public final class SlotRenderHelper {
         return slot.getRenderStack();
     }
 
-    public static void renderSlotIcon(GuiGraphicsExtractor graphics, RadialSlot slot, float x, float y) {
+    public static void renderSlotIcon(GuiGraphics graphics, RadialSlot slot, float x, float y) {
         if (slot == null || slot.itemId == null || !slot.mode.shouldRenderIcon()) {
 
             return;
@@ -148,7 +148,7 @@ public final class SlotRenderHelper {
 
             int centerY = (int) y + Math.round((26 - 8) / 2.0f);
 
-            graphics.text(client.font, glyph, centerX, centerY, 0xFFFFFFFF);
+            graphics.drawString(client.font, glyph, centerX, centerY, 0xFFFFFFFF);
 
             return;
         }
@@ -188,11 +188,11 @@ public final class SlotRenderHelper {
 
         if (stack != null && !stack.isEmpty()) {
 
-            graphics.fakeItem(stack, (int) x + 5, (int) y + 5);
+            graphics.renderItem(stack, (int) x + 5, (int) y + 5);
         }
     }
 
-    private static void renderPhosphorIcon(GuiGraphicsExtractor graphics, String iconName, float x, float y) {
+    private static void renderPhosphorIcon(GuiGraphics graphics, String iconName, float x, float y) {
         PhosphorIconCache.PhosphorIcon icon = PhosphorIconCache.getIcons().stream()
                 .filter(candidate -> candidate.name().equals(iconName))
                 .findFirst()
@@ -214,6 +214,6 @@ public final class SlotRenderHelper {
 
         int textY = (int) y + Math.round((26 - client.font.lineHeight) / 2.0F) + 4;
 
-        graphics.text(client.font, component, textX, textY, 0xFFFFFFFF, false);
+        graphics.drawString(client.font, component, textX, textY, 0xFFFFFFFF, false);
     }
 }

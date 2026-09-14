@@ -7,12 +7,12 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.Click;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.NonNull;
@@ -108,16 +108,16 @@ public class ShortcutSelectionScreen extends Screen {
     }
 
     @Override
-    public void extractRenderState(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+    public void render(@NonNull GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 
         graphics.fillGradient(0, 0, width, height, 0xC0101010, 0xD0101010);
 
-        super.extractRenderState(graphics, mouseX, mouseY, delta);
+        super.render(graphics, mouseX, mouseY, delta);
     }
 
     @Override
     public void onClose() {
-        minecraft.gui.setScreen(parent);
+        minecraft.setScreen(parent);
     }
 
     private static class ShortcutList extends ObjectSelectionList<ShortcutEntryItem> {
@@ -150,33 +150,42 @@ public class ShortcutSelectionScreen extends Screen {
         }
 
         @Override
-        public void extractContent(
-                GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean hovered, float delta) {
+        public void render(
+                GuiGraphics graphics,
+                int index,
+                int top,
+                int left,
+                int width,
+                int height,
+                int mouseX,
+                int mouseY,
+                boolean hovered,
+                float partialTick) {
 
             Minecraft client = Minecraft.getInstance();
 
-            int left = getContentX();
-            int top = getContentY();
+            int entryLeft = getContentX();
+            int entryTop = getContentY();
             int right = getContentRight();
             int bottom = getContentBottom();
 
-            graphics.fill(left, top + 1, right, bottom - 1, hovered ? 0x80FFFFFF : 0x40000000);
+            graphics.fill(entryLeft, entryTop + 1, right, bottom - 1, hovered ? 0x80FFFFFF : 0x40000000);
 
-            int textY = top + ((bottom - top) - client.font.lineHeight) / 2;
+            int textY = entryTop + ((bottom - entryTop) - client.font.lineHeight) / 2;
 
             String displayName = entry.name().getString();
 
-            graphics.text(client.font, displayName, left + 8, textY, 0xFFFFFFFF);
+            graphics.drawString(client.font, displayName, entryLeft + 8, textY, 0xFFFFFFFF);
 
             String idString = id.toString();
 
             int idWidth = client.font.width(idString);
 
-            graphics.text(client.font, idString, right - idWidth - 8, textY, 0xFFAAAAAA);
+            graphics.drawString(client.font, idString, right - idWidth - 8, textY, 0xFFAAAAAA);
         }
 
         @Override
-        public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        public boolean mouseClicked(Click event, boolean doubleClick) {
 
             if (event.button() != 0) {
                 return false;
