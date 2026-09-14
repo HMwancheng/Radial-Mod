@@ -81,6 +81,12 @@ java {
 	targetCompatibility = JavaVersion.VERSION_21
 }
 
+loom {
+	mixin {
+		useLegacyMixinAp = true
+	}
+}
+
 jar {
 	inputs.property "archivesName", project.base.archivesName
 

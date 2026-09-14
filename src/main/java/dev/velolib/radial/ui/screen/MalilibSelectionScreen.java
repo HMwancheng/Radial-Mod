@@ -9,7 +9,7 @@ import java.util.TreeMap;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Click;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -252,7 +252,7 @@ public class MalilibSelectionScreen extends Screen {
         }
 
         @Override
-        public boolean mouseClicked(Click event, boolean doubleClick) {
+        public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
 
             if (event.button() != 0) {
                 return false;

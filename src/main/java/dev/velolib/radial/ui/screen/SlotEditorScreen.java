@@ -8,7 +8,7 @@ import dev.velolib.radial.render.SlotRenderHelper;
 import dev.velolib.radial.ui.widget.DropdownButtonWidget;
 import dev.velolib.radial.ui.widget.DropdownMenuWidget;
 import java.util.List;
-import net.minecraft.client.gui.Click;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -198,7 +198,7 @@ public class SlotEditorScreen extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(@NonNull Click click, boolean doubled) {
+    public boolean mouseClicked(@NonNull MouseButtonEvent click, boolean doubled) {
         if (this.modeDropdown != null && this.modeDropdown.isMenuOpen()) {
             DropdownMenuWidget<SlotMode> floatingMenu = this.modeDropdown.getActiveMenu();
 

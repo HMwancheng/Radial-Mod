@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -28,7 +28,7 @@ public abstract class GridIconTab<T> implements IconTab {
     protected abstract List<T> search(String query);
 
     protected abstract void renderIcon(
-            GuiGraphicsExtractor graphics, int x, int y, int mouseX, int mouseY, T item, boolean hovered);
+            GuiGraphics graphics, int x, int y, int mouseX, int mouseY, T item, boolean hovered);
 
     protected abstract void selectIcon(T item);
 
@@ -76,7 +76,7 @@ public abstract class GridIconTab<T> implements IconTab {
     }
 
     @Override
-    public void render(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
         /* Managed by listWidget */
     }
 
@@ -117,7 +117,7 @@ public abstract class GridIconTab<T> implements IconTab {
 
         @Override
         public void extractContent(
-                @NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean hovered, float delta) {
+                @NonNull GuiGraphics graphics, int mouseX, int mouseY, boolean hovered, float delta) {
             int left = getContentX();
             int top = getContentY();
             int slotSize = getSlotSize();

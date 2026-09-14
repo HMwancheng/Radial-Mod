@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -45,7 +45,7 @@ public class EffectIconTab extends GridIconTab<MobEffect> {
 
     @Override
     protected void renderIcon(
-            GuiGraphicsExtractor graphics, int x, int y, int mouseX, int mouseY, MobEffect effect, boolean hovered) {
+            GuiGraphics graphics, int x, int y, int mouseX, int mouseY, MobEffect effect, boolean hovered) {
         String path = Objects.requireNonNull(BuiltInRegistries.MOB_EFFECT.getKey(effect))
                 .getPath();
         Identifier spriteId = Identifier.fromNamespaceAndPath("minecraft", "mob_effect/" + path);

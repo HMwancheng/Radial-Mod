@@ -8,7 +8,7 @@ import dev.isxander.yacl3.gui.YACLScreen;
 import dev.velolib.radial.render.DonutRenderer;
 import java.awt.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -304,8 +304,7 @@ public class RadialConfigScreen {
                         public void setFocused(boolean focused) {}
 
                         @Override
-                        public void extractRenderState(
-                                @NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+                        public void renderWidget(@NonNull GuiGraphics graphics, int mouseX, int mouseY, float delta) {
                             if (showPreview) {
                                 renderPreview(graphics, config);
                             }
@@ -341,7 +340,7 @@ public class RadialConfigScreen {
      * Detection-zone preview
      */
     private static void drawAnnulus(
-            GuiGraphicsExtractor graphics, float cx, float cy, float innerRadius, float outerRadius) {
+            GuiGraphics graphics, float cx, float cy, float innerRadius, float outerRadius) {
         if (outerRadius <= innerRadius) return;
 
         float outerSquared = outerRadius * outerRadius;
@@ -383,7 +382,7 @@ public class RadialConfigScreen {
     /*
      * Preview rendering
      */
-    private static void renderPreview(GuiGraphicsExtractor graphics, RadialConfig config) {
+    private static void renderPreview(GuiGraphics graphics, RadialConfig config) {
         Minecraft client = Minecraft.getInstance();
 
         int cx = client.getWindow().getGuiScaledWidth() / 2;

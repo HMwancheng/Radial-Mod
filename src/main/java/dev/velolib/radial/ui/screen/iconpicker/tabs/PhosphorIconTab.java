@@ -5,7 +5,7 @@ import dev.velolib.radial.util.PhosphorIconCache;
 import java.util.List;
 import java.util.function.Consumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FontDescription;
 import net.minecraft.network.chat.Style;
@@ -38,7 +38,7 @@ public class PhosphorIconTab extends GridIconTab<PhosphorIconCache.PhosphorIcon>
 
     @Override
     protected void renderIcon(
-            GuiGraphicsExtractor graphics,
+            GuiGraphics graphics,
             int x,
             int y,
             int mouseX,

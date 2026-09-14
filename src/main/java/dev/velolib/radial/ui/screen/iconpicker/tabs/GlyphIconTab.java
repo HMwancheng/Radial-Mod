@@ -5,7 +5,7 @@ import dev.velolib.radial.util.GlyphCache;
 import java.util.List;
 import java.util.function.Consumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
 public class GlyphIconTab extends GridIconTab<String> {
@@ -33,7 +33,7 @@ public class GlyphIconTab extends GridIconTab<String> {
 
     @Override
     protected void renderIcon(
-            GuiGraphicsExtractor graphics, int x, int y, int mouseX, int mouseY, String glyph, boolean hovered) {
+            GuiGraphics graphics, int x, int y, int mouseX, int mouseY, String glyph, boolean hovered) {
         Minecraft client = Minecraft.getInstance();
         int textWidth = client.font.width(glyph);
         int textX = x + (getSlotSize() - textWidth) / 2;

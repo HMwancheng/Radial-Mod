@@ -3,7 +3,7 @@ package dev.velolib.radial.ui.screen.iconpicker.tabs;
 import dev.velolib.radial.ui.screen.iconpicker.IconTab;
 import java.util.function.Consumer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -50,7 +50,7 @@ public class InventoryIconTab implements IconTab {
     }
 
     @Override
-    public void render(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null) return;
 
@@ -109,7 +109,7 @@ public class InventoryIconTab implements IconTab {
     }
 
     private void drawInvSlot(
-            GuiGraphicsExtractor graphics, Minecraft mc, int mouseX, int mouseY, int x, int y, ItemStack stack) {
+            GuiGraphics graphics, Minecraft mc, int mouseX, int mouseY, int x, int y, ItemStack stack) {
         if (!stack.isEmpty()) {
             graphics.fakeItem(stack, x + 1, y + 1);
         }
